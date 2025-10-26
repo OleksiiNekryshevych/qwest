@@ -1,4 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
+import gema3n from "../gema3n";
+import refImg from "../assets/IMG_7421 3.jpg";
 
 // --- Reusable Modal Component ---
 // This component is used for all pop-ups.
@@ -102,6 +104,18 @@ export default function MainComponent() {
     }
   }, [step]);
 
+  // initialise local gema3n model with reference image once
+  useEffect(() => {
+    (async () => {
+      try {
+        await gema3n.init(refImg);
+        window.__gema3n_init = true;
+      } catch (err) {
+        console.warn("Failed to init gema3n", err);
+      }
+    })();
+  }, []);
+
   // Effect for the "Downloading" progress bar simulation
   useEffect(() => {
     if (step === "downloading") {
@@ -174,6 +188,91 @@ export default function MainComponent() {
 
   const handleDownloadClick = () => {
     setStep("downloading");
+  };
+
+  // Called when user presses SCAN button in scanning step
+  const handleScan = async () => {
+    if (!videoRef.current) return;
+    try {
+      // freeze a frame into a canvas
+      const canvas = document.createElement("canvas");
+      const vw = videoRef.current.videoWidth || 640;
+      const vh = videoRef.current.videoHeight || 480;
+      // use square capture for simplicity
+      const size = Math.min(vw, vh, 640);
+      canvas.width = size;
+      canvas.height = size;
+      const ctx = canvas.getContext("2d");
+      // draw centered crop
+      const sx = Math.max(0, (vw - size) / 2);
+      const sy = Math.max(0, (vh - size) / 2);
+      ctx.drawImage(videoRef.current, sx, sy, size, size, 0, 0, size, size);
+
+      // model should have been initialised on mount; fallback to init now
+      if (!window.__gema3n_init) {
+        await gema3n.init(refImg);
+        window.__gema3n_init = true;
+      }
+
+      // show a quick overlay while the model runs
+      setModalContent({
+        title: "Сканування",
+        text: "Перевірка зображення…",
+        button: "Скасувати",
+        onClose: () => {
+          setIsModalOpen(false);
+          setStep("scanning");
+        },
+      });
+      setIsModalOpen(true);
+
+      const refObjDescription =
+        "long, white modular shelving unit configured in a 2-row by 8-column grid (16 cubbies total). The white structure features a mix of inserts, including multiple solid black doors, several light-colored wood (bamboo) doors. The open cubbies and floor area to the right contain various items, board games. On top of the white shelf sits a black flat-screen TV";
+
+      const res = await gema3n.query(canvas, refObjDescription);
+
+      // hide interim modal
+      setIsModalOpen(false);
+
+      console.log(res);
+
+      if (res.contains && res.similarity >= 0.9) {
+        // success modal
+        setModalContent({
+          title: "Об’єкт знайдено",
+          text: "Об’єкт був виявлений. Варто придивитись до сховищя всередині.",
+          button: "Готово",
+          onClose: () => {
+            setIsModalOpen(false);
+            setStep("greeting");
+          },
+        });
+        setIsModalOpen(true);
+        setStep("found");
+      } else {
+        // not found - remain scanning
+        setModalContent({
+          title: "Не знайдено",
+          text: "Об’єкт не виявлено. Спробуйте ще раз.",
+          button: "Повернутись",
+          onClose: () => {
+            setIsModalOpen(false);
+            setStep("scanning");
+          },
+        });
+        setIsModalOpen(true);
+        setStep("scanning");
+      }
+    } catch (err) {
+      console.error("Scan error", err);
+      setModalContent({
+        title: "Помилка",
+        text: "Під час сканування сталася помилка.",
+        button: "OK",
+        onClose: () => setIsModalOpen(false),
+      });
+      setIsModalOpen(true);
+    }
   };
 
   // --- RENDER ---
@@ -312,7 +411,7 @@ export default function MainComponent() {
             {/* Scan/Restart Button */}
             {step === "scanning" && (
               <button
-                // onClick logic removed as requested
+                onClick={handleScan}
                 className="w-full px-8 py-3 font-bold text-gray-900 uppercase transition-all transform rounded-lg shadow-lg bg-yellow-600 hover:bg-yellow-500 hover:scale-105"
               >
                 СКАНУВАТИ
