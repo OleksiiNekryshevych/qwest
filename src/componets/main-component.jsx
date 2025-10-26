@@ -56,9 +56,9 @@ export default function MainComponent() {
     // Automatically proceed to the instructions
     setStep("instructions"); // Use a nominal step for the modal
     setModalContent({
-      title: "The Magical Upgrade Procedure",
-      text: 'You must scan your surroundings to check for obstacles to the upgrade. Point your camera and press the "Scan" button.',
-      button: "I Understand",
+      title: "Процедура магічного оновлення",
+      text: "Вам потрібно просканувати оточення, щоб перевірити наявність перешкод для оновлення. Наведіть камеру та натисніть кнопку «Сканувати».",
+      button: "Зрозуміло",
       onClose: handleInstructionsModalClose, // Point to the next handler
     });
     setIsModalOpen(true);
@@ -111,9 +111,9 @@ export default function MainComponent() {
             clearInterval(interval);
             setStep("error"); // Set to error step
             setModalContent({
-              title: "Download Error",
-              text: "Insufficient magical energy for upgrade. Failed to initiate system upgrade. A device with the newest enchanting technologies is required.",
-              button: "Acknowledged",
+              title: "Помилка завантаження",
+              text: "Недостатньо магічної енергії для оновлення. Не вдалося ініціювати системне оновлення. Потрібно оновити пристрій до новіших технологій.",
+              button: "Оновити",
               onClose: handleDownloadErrorClose, // Use the new handler
             });
             setIsModalOpen(true);
@@ -146,9 +146,9 @@ export default function MainComponent() {
           // *** THIS IS THE FIX ***
           // Do NOT change the step. Just show a modal on top.
           setModalContent({
-            title: "Camera Error",
-            text: "Failed to access camera. Please ensure permissions are granted and try again.",
-            button: "Restart",
+            title: "Помилка камери",
+            text: "Не вдалося отримати доступ до камери. Перевірте дозволи браузера та спробуйте ще раз.",
+            button: "Перезапустити",
             onClose: handleRestart, // Use the RESTART handler
           });
           setIsModalOpen(true);
@@ -214,7 +214,7 @@ export default function MainComponent() {
               }`}
             >
               <span className="relative inline-block">
-                Greetings, Alina!
+                Вітаю, Аліно!
                 {/* Pulsating gold outline */}
                 <span className="absolute -inset-1 border-2 border-yellow-500/50 rounded-lg animate-pulse"></span>
               </span>
@@ -224,8 +224,8 @@ export default function MainComponent() {
                 textVisible ? "opacity-100" : "opacity-0"
               }`}
             >
-              A very happy birthday to you. To begin the celebration, you must
-              first acquire the necessary materials.
+              Щиро вітаю з днем народження. Щоб розпочати святкування, спочатку
+              потрібно зібрати необхідні матеріали.
             </p>
             <button
               onClick={handleDownloadClick}
@@ -233,7 +233,7 @@ export default function MainComponent() {
                 buttonVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
               }`}
             >
-              Download Materials
+              Завантажити матеріали
             </button>
           </div>
         )}
@@ -243,7 +243,9 @@ export default function MainComponent() {
         {(step === "downloading" || step === "error") && !isModalOpen && (
           <div className="flex flex-col items-center justify-center space-y-8 min-h-[400px]">
             <h2 className="text-2xl font-serif text-yellow-300">
-              {step === "downloading" ? "Downloading..." : "Download Failed"}
+              {step === "downloading"
+                ? "Завантаження..."
+                : "Завантаження не вдалося"}
             </h2>
 
             {/* Progress Bar */}
@@ -253,7 +255,7 @@ export default function MainComponent() {
                 style={{ width: `${progress}%` }}
               ></div>
             </div>
-            <p className="text-lg text-yellow-100">{progress}% Complete</p>
+            <p className="text-lg text-yellow-100">{progress}% виконано</p>
 
             {/* This space is intentionally blank, as the modal flow is now automatic */}
           </div>
@@ -264,7 +266,7 @@ export default function MainComponent() {
         {(step === "scanning" || step === "found") && (
           <div className="flex flex-col items-center justify-center space-y-4">
             <h2 className="text-2xl font-serif text-yellow-300">
-              {step === "found" ? "Upgrade Complete!" : "Magical Upgrade"}
+              {step === "found" ? "Оновлення завершено!" : "Магічне оновлення"}
             </h2>
 
             {/* Camera Viewport */}
@@ -294,11 +296,10 @@ export default function MainComponent() {
                   <div className="w-2/3 h-2/3 border-8 border-red-500 rounded-lg shadow-inner animate-pulse"></div>
                   <div className="absolute p-4 text-center">
                     <h3 className="text-2xl font-bold text-white">
-                      Magical Object Found!
+                      Знайдено магічний об'єкт!
                     </h3>
                     <p className="mt-2 text-lg text-white">
-                      This is the source of enchanting power required for the
-                      upgrade.
+                      Це джерело зачарованої енергії, потрібне для оновлення.
                     </p>
                   </div>
                 </div>
@@ -314,7 +315,7 @@ export default function MainComponent() {
                 // onClick logic removed as requested
                 className="w-full px-8 py-3 font-bold text-gray-900 uppercase transition-all transform rounded-lg shadow-lg bg-yellow-600 hover:bg-yellow-500 hover:scale-105"
               >
-                SCAN
+                СКАНУВАТИ
               </button>
             )}
 
@@ -324,7 +325,7 @@ export default function MainComponent() {
                 onClick={handleRestart}
                 className="w-full px-8 py-3 font-bold text-gray-900 uppercase transition-all transform rounded-lg shadow-lg bg-green-500 hover:bg-green-400 hover:scale-105"
               >
-                Quest Complete (Restart)
+                Завершити (Перезапустити)
               </button>
             )}
           </div>
