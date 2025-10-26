@@ -236,7 +236,7 @@ export default function MainComponent() {
 
       console.log(res);
 
-      if (res.contains && res.similarity >= 0.9) {
+      if (res.contains && res.similarity >= 0.999) {
         // success modal
         setModalContent({
           title: "Об’єкт знайдено",
