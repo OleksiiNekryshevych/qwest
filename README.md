@@ -80,3 +80,13 @@ What it does:
 - Uploads the `build/` directory as an artifact you can download from the workflow run.
 
 Check Actions in the GitHub UI to inspect run logs and download the produced `build` artifact.
+
+## GitHub Pages deployment
+
+There is a Pages workflow at `.github/workflows/jekyll-gh-pages.yml` (renamed to build+deploy) that will run `npm ci` and `npm run build`, then deploy the generated `build/` directory to GitHub Pages using the official Pages actions. If you still see only the README deployed, ensure:
+
+- The repository's GitHub Pages site is configured to use the repository pages (the workflow deploys to the project page).
+- You have pushed to the `main` branch.
+- The `homepage` field in `package.json` is correct for the repo path (if your site is served from `https://<org>.github.io/<repo>` set `homepage` accordingly).
+
+If you need me to set the `homepage` or confirm the Pages settings, tell me and I will help.
