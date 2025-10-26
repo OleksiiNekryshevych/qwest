@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import gema3n from "../gema3n";
-import refImg from "../assets/IMG_7421 3.jpg";
+import refImg from "../assets/IMG_7421.jpg";
 
 // --- Reusable Modal Component ---
 // This component is used for all pop-ups.
