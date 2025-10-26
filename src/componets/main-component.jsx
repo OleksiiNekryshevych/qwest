@@ -179,7 +179,7 @@ export default function MainComponent() {
   // --- RENDER ---
 
   return (
-    <div className="relative flex items-center justify-center min-h-screen p-4 text-yellow-50 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 font-sans overflow-hidden">
+    <div className="hq-app relative flex items-center justify-center min-h-screen p-4 text-yellow-50 bg-gradient-to-br from-gray-900 via-blue-950 to-gray-900 font-sans overflow-hidden">
       {/* Background magical particles (subtle) */}
       <div
         className="absolute inset-0 z-0 opacity-20"
@@ -192,17 +192,19 @@ export default function MainComponent() {
 
       {/* Modal display logic */}
       {isModalOpen && (
-        <Modal
-          title={modalContent.title}
-          buttonText={modalContent.button}
-          onClose={modalContent.onClose || (() => setIsModalOpen(false))}
-        >
-          <p>{modalContent.text}</p>
-        </Modal>
+        <div className="hq-modal">
+          <Modal
+            title={modalContent.title}
+            buttonText={modalContent.button}
+            onClose={modalContent.onClose || (() => setIsModalOpen(false))}
+          >
+            <p>{modalContent.text}</p>
+          </Modal>
+        </div>
       )}
 
       {/* Main content container */}
-      <div className="relative z-10 w-full max-w-md p-6 text-center">
+      <div className="hq-content relative z-10 w-full max-w-md p-6 text-center">
         {/* --- SCREEN 1: GREETING --- */}
         {step === "greeting" && (
           <div className="flex flex-col items-center justify-center space-y-8 min-h-[400px]">
