@@ -239,7 +239,7 @@ export default function MainComponent() {
       if (res.contains && res.similarity === 1) {
         // success modal
         setModalContent({
-          title: "Об’єкт знайдено",
+          title: "Об’єкт знайдено.",
           text: "Об’єкт був виявлений. Варто придивитись до сховищя всередині.",
           button: "Готово",
           onClose: () => {
