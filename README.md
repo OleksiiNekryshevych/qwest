@@ -68,3 +68,15 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+## Continuous Integration (GitHub Actions)
+
+This repository includes a GitHub Actions workflow at `.github/workflows/build.yml` that runs on every push and pull request to `main`.
+
+What it does:
+
+- Installs dependencies using `npm ci`.
+- Builds the app (`npm run build`).
+- Uploads the `build/` directory as an artifact you can download from the workflow run.
+
+Check Actions in the GitHub UI to inspect run logs and download the produced `build` artifact.
